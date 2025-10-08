@@ -15,10 +15,15 @@ const cabin = {
     "https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg",
 };
 
+export async function generateMetadata({params}: {params : {cabinId:number}}) {
+  const {name} = await getCabin(params.cabinId);
+  return {title: `Cabin ${name}`}
+}
+
 export default async function Page({params}: {params : {cabinId:number}}) {
   const cabin = await getCabin(params.cabinId)
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
-  cabin;
+  cabin ?? {};
   return (
     <div className="max-w-6xl mx-auto mt-8">
       <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
