@@ -1,34 +1,46 @@
-import { getCabin } from "@/app/lib/data-service";
+import { getCabin, getCabins } from "@/app/lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import type { Metadata } from 'next';
 
-// PLACEHOLDER DATA
-const cabin = {
-  id: 89,
-  name: "001",
-  maxCapacity: 2,
-  regularPrice: 250,
-  discount: 0,
-  description:
-    "Discover the ultimate luxury getaway for couples in the cozy wooden cabin 001. Nestled in a picturesque forest, this stunning cabin offers a secluded and intimate retreat. Inside, enjoy modern high-quality wood interiors, a comfortable seating area, a fireplace and a fully-equipped kitchen. The plush king-size bed, dressed in fine linens guarantees a peaceful nights sleep. Relax in the spa-like shower and unwind on the private deck with hot tub.",
-  image:
-    "https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg",
-};
-
-export async function generateMetadata({params}: {params : {cabinId:number}}) {
-  const {name} = await getCabin(params.cabinId);
-  return {title: `Cabin ${name}`}
+type PageProps = {
+  params : {
+    cabinId: string;
+  }
 }
 
-export default async function Page({params}: {params : {cabinId:number}}) {
-  const cabin = await getCabin(params.cabinId)
-  const { id, name, maxCapacity, regularPrice, discount, image, description } =
-  cabin ?? {};
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const cabinId = Number(params.cabinId);
+  const { name } = await getCabin(cabinId);
+  return { title: `Cabin ${name}` };
+}
+
+
+export async function generateStaticParams() {
+  const cabins = await getCabins();
+
+  const ids = cabins.map((cabin) => ({ cabinId: cabin.id.toString() }));
+
+  return ids;
+}
+
+export default async function Page({params}: PageProps) {
+  const cabinId = Number(params.cabinId);
+  const cabin = await getCabin(cabinId);
+  // const { id, name, maxCapacity, regularPrice, discount, image, description } =
+  const { name, maxCapacity, image, description } = cabin ?? {};
   return (
     <div className="max-w-6xl mx-auto mt-8">
       <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
         <div className="relative scale-[1.15] -translate-x-3">
-          <Image src={image} fill className="object-cover" alt={`Cabin ${name}`} />
+          <Image
+            src={image}
+            fill
+            className="object-cover"
+            alt={`Cabin ${name}`}
+          />
         </div>
 
         <div>
