@@ -16,8 +16,6 @@ export const metadata = {
   description: "Luxurious Cabin Hotels",
 };
 
-console.log(josefin);
-
 export default function RootLayout({
   children,
 }: {
