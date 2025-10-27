@@ -1,7 +1,10 @@
+"use state"
+
 import { getCabin, getCabins } from "@/app/lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import type { Metadata } from 'next';
+import TextExpander from "@/app/components/TextExpander";
 
 type PageProps = {
   params : {
@@ -48,7 +51,11 @@ export default async function Page({params}: PageProps) {
             Cabin {name}
           </h3>
 
-          <p className="text-lg text-primary-300 mb-10">{description}</p>
+          <p className="text-lg text-primary-300 mb-10">
+            <TextExpander>
+              {description}
+            </TextExpander>
+          </p>
 
           <ul className="flex flex-col gap-4 mb-7">
             <li className="flex gap-3 items-center">
