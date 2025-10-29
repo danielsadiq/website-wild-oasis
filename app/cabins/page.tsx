@@ -1,11 +1,17 @@
 import { Suspense } from "react";
 import CabinList from "../components/CabinList";
 import Spinner from "../components/Spinner";
+
 export const metadata = {
   title: "Cabins",
 };
 
-export default async function Page() {
+// type SearchParams = { capacity:string, [key: string]: string | string[] | undefined };
+type SearchParams = { capacity:string };
+
+export default async function Page({searchParams}: {searchParams:SearchParams}) {
+  const filter = searchParams?.capacity ?? "all";
+  console.log(filter)
   // CHANGE
   return (
     <div>
@@ -21,7 +27,7 @@ export default async function Page() {
         Welcome to paradise.
       </p>
       <Suspense fallback={<Spinner/>}>
-        <CabinList/>
+        <CabinList filter={filter} />
       </Suspense>
     </div>
   );
