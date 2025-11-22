@@ -5,6 +5,8 @@ import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import type { Metadata } from 'next';
 import TextExpander from "@/app/components/TextExpander";
+import DateSelector from "@/app/components/DateSelector";
+import ReservationForm from "@/app/components/ReservationForm";
 
 type PageProps = {
   params : {
@@ -84,9 +86,14 @@ export default async function Page({params}: PageProps) {
 
       <div>
         <h2 className="text-5xl font-semibold text-center">
-          Reserve today. Pay on arrival.
+          Reserve {name} today. Pay on arrival.
         </h2>
+        <div className="grid md:grid-cols-2 border border-primary-800 min-h-[400px]">
+          <DateSelector/>
+          <ReservationForm/>
+        </div>
       </div>
+
     </div>
   );
 }
